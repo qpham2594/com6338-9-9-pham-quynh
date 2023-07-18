@@ -29,8 +29,11 @@ weatherForm.onsubmit = async function(e) {
             throw new Error('Location Not Found');
           }
         locationData(weatherData)
-    } catch(err) {
+        
+    } 
+    catch(err) {
         weatherSearch.innerHTML = ''
+        weatherForm.search.value = ''
         locationNotFound.innerHTML = "Location Not Found";
         weatherSearch.appendChild(locationNotFound);
         };
@@ -90,6 +93,8 @@ const locationData = ({
     weatherSearch.appendChild(updatedTime)
 
 }
+
+
 // function to display data on DOM
 /*
 function locationData(weather) {
