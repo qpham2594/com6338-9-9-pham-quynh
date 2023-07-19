@@ -19,7 +19,8 @@ weatherForm.onsubmit = async function(e) {
     if (!searchTerm || /^\s*$/.test(searchTerm)) {
         return;
     }
-
+    // use await fetch to retrieve information from API
+    // use try and catch to catch the error
     const apiKey = '?units=imperial&appid=aa3f1ef4a1b7d2080dc5d3357ddcaaa0&q=';
     try {
         const res = await fetch(`https://api.openweathermap.org/data/2.5/weather${apiKey}${searchTerm}`)
@@ -27,22 +28,26 @@ weatherForm.onsubmit = async function(e) {
 
         if (weatherData.error) {
             throw new Error('Location Not Found');
-          }
+          } 
         locationData(weatherData)
         
-    } 
+    } // atttempted locationNotFound.innerHTML = err.message but does not pass the test
     catch(err) {
         weatherSearch.innerHTML = ''
         weatherForm.search.value = ''
-        locationNotFound.innerHTML = "Location Not Found";
+        locationNotFound.innerHTML = 'Location Not Found';
         weatherSearch.appendChild(locationNotFound);
         };
 }
+// clear out the search value and the form in catch block
+// in previous assignment, we didn't have to clear weatherSearch above, but here, we have to
 
 
-
+// defined const locationData with information from the data and used it to form a function
+// using the arrow to define function from the constant
+// instead of using weather.main.name, we can use ${} and insert the data name we have when we define the const
 const locationData = ({
-
+    
     name,
     sys: {country},
     weather: [{description,icon}],
@@ -59,7 +64,7 @@ const locationData = ({
 
     coordinateLink.innerHTML = "Click to view map";
     coordinateLink.href = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
-    coordinateLink.target = "_blank";
+    coordinateLink.target = "_blank"; //instead of setAttribute, we can directly set it up like such
     weatherSearch.appendChild(coordinateLink)
 
     const weatherImgLink = 'https://openweathermap.org/img/wn/'
@@ -92,69 +97,5 @@ const locationData = ({
     updatedTime.innerHTML = `Last Updated: ${timeString}`;
     weatherSearch.appendChild(updatedTime)
 
-}
-
-
-// function to display data on DOM
-/*
-function locationData(weather) {
-        console.log(weather)
-        weatherSearch.innerHTML = ''
-        weatherForm.search.value = ''
-        // reset after each submission
-        // without the ? after sys, there was a TypeError message in console?
-
-        cityAndCountry.innerHTML = weather.name + ", " + weather.sys?.country ;
-        console.log(cityAndCountry)
-        weatherSearch.appendChild(cityAndCountry)
-
-       //attempted to create one constiable with both lat and lon and combined everything in <a href > with "target_BLANK" inside but did not pass test
-       //then split everything up and set attribute separately
-        const latitude = weather.coord?.lat;
-        const longitude = weather.coord?.lon;
-        coordinateLink.textContent = "Click to view map";
-        coordinateLink.href = 'https://www.google.com/maps/search/?api=1&query=' + latitude + ',' + longitude;
-        coordinateLink.setAttribute('target', '_blank');
-        weatherSearch.appendChild(coordinateLink)
-        
-      // initially used icons URLs, set an array, then use if statement to detect key words in weather.main[0]
-      // the above way worked, but did not pass the last test - possibly due to all the URL links
-      // split everything up and combined with weatherImg.src instead 
-        const weatherImgCode = weather.weather[0].icon
-        const weatherImgLink = 'https://openweathermap.org/img/wn/'
-        weatherImg.src = weatherImgLink + weatherImgCode + '@2x.png'
-        weatherSearch.appendChild(lineBreak)
-        weatherSearch.appendChild(weatherImg)
-
-    // split the word into array to capitalize the first letter and lowercase letters for the rest, then rejoin 
-        condition.innerHTML = weather.weather[0].description
-        .split(' ') // Split the description into an array of words
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize the first letter and lowercase the rest
-        .join(' '); // Join the words back into a single string with spaces
-        weatherSearch.appendChild(condition)
-
-        weatherSearch.appendChild(lineBreak)
-
-        
-        current.innerHTML = "Current: " + weather.main?.temp + " °F";
-        weatherSearch.appendChild(current)
-
-       
-        feelsLike.innerHTML = "Feels Like: " + weather.main?.feels_like + " °F";
-        weatherSearch.appendChild(feelsLike)
-
-        weatherSearch.appendChild(lineBreak)
-
-        // Using the instruction and example from the page
-        const milliseconds = weather.dt * 1000;
-        const date = new Date(milliseconds); // Create a new Date object with the current time
-        const timeString = date.toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit'
-        });
-
-        updatedTime.innerHTML = "Last Updated: " + timeString;
-        weatherSearch.appendChild(updatedTime)
-}
-*/
+} // using ${} will save time and shorten the code, also making it easier to keep track of
 
